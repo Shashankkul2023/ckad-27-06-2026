@@ -1,6 +1,27 @@
 #!/bin/bash
 echo "Setting up resources for CKAD scenarios..."
 
+# Task 1: Secrets and Environment Variables
+# Create a Pod with hardcoded environment variables that the candidate must replace with secrets
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hardcoded-env-pod
+  namespace: default
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    env:
+    - name: DB_USERNAME
+      value: testusername
+    - name: DB_PASSWORD
+      value: zyfsfsf
+    - name: DB_NAME
+      value: applicationdb
+EOF
+
 # Task 2: Ingress 
 kubectl create deployment internal-api --image=nginx -n default
 kubectl expose deployment internal-api --name=internal-api-service --port=3000 --target-port=80 -n default
